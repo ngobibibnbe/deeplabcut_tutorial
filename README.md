@@ -8,7 +8,8 @@ By starting this tutorial, we assume you know how to labelize data, you can look
 Tutorial explaining main functions of multi animal deeplabcut. 
 
 :white_check_mark: Explain what is the interest of the create_training_dataset function and its special usefull interest
-:white_check_mark: Focus on characteristics presents on the datasets (seasonality, trend, cycle, concept drift) 
+
+:white_check_mark: 
 
 ### Interested in my work?
 
@@ -16,15 +17,93 @@ Feel free to contact me at: anne.ngobibinbe@gmail.com
 
 *The final version of our work will be post soonly on ***************
 ### README Structure
-1. [Methods compared](#Methods-compared): Presentation of methods we compared
+1. [Create_training_dataset](#Methods-compared): Focused on the create_training_dataset function
 2. [Datasets and their characteristics](#Datasets-and-their-characteristics): Brief Description of datasets and characteristics identified 
 3. [Description of the experimental protocol](#Description-of-the-experimental-protocol): Description of the experimental protocol
 5. [Results](#Results): Presentation of results obtained
 6. [Reproducibility](#Reproducibility): Details on how to reproduce our tests
 7. [Referencies](#Referencies)
 
+## Config_file parameters explanation
+    # Project definitions (do not edit)
+Task: CDPQ_test
+scorer: CDPQ_experiment
+date: Feb22
+multianimalproject: true
+identity: false
 
-## Methods compared
+    # Project path (change when moving around)
+project_path: /home/ulaval.ca/amngb2/projects/ul-val-prj-def-erpaq33/sophie/cdpq/deeplabcut/CDPQ_test-CDPQ_experiment-2022-02-22
+
+    # Annotation data set configuration (and individual video cropping parameters)
+video_sets:  (video datasets, only their frames will be considered when using the create_multianimal_dataset function)
+  C:\Users\sophie\Desktop\laval\PHD\CDPQ\deeplabcut\CDPQ_test-CDPQ_experiment-2022-02-22\videos\GR77_20200512_111309.mp4:
+    crop: 0, 1280, 0, 720
+  C:\Users\sophie\Desktop\laval\PHD\CDPQ\deeplabcut\CDPQ_test-CDPQ_experiment-2022-02-22\videos\GR77_20200512_111314.mp4:
+    crop: 0, 1280, 0, 720
+individuals:
+- individual1
+- individual2
+- individual3
+- individual4
+- individual5
+- individual6
+- individual7
+- individual8
+- individual9
+- individual10
+- individual11
+- individual12
+- individual13
+- individual14
+- individual15
+
+uniquebodyparts: []
+multianimalbodyparts:
+- center
+- tail
+skeleton:
+- - center
+  - tail
+bodyparts: MULTI!
+start: 0
+stop: 1
+numframes2pick: 20
+
+    # Plotting configuration
+skeleton_color: black
+pcutoff: 0.6
+dotsize: 12
+alphavalue: 0.7
+colormap: rainbow
+
+    # Training,Evaluation and Analysis configuration
+TrainingFraction:
+- 0.95 - % of dataset that will be used for training 
+iteration: 0 -this number keeps track of how often the dataset was refined (in general, you will have some subdirectory with iteration/# this will mean it's for the #-th refined dataset ), it could help you keeping different version of your project for example with different config file you have different iteration value
+default_net_type: dlcrnet_ms5
+default_augmenter: multi-animal-imgaug
+default_track_method: ellipse
+snapshotindex: -1
+batch_size: 8
+
+    # Cropping Parameters (for analysis and outlier frame detection)
+cropping: false
+    #if cropping is true for analysis, then set the values here:
+x1: 0
+x2: 640
+y1: 277
+y2: 624
+
+    # Refinement configuration (parameters from annotation dataset configuration also relevant in this stage)
+corner2move2:
+- 50
+- 50
+move2corner: true
+
+## Create_training dataset
+Creates a training dataset for multi-animal datasets based on labeled videos included in the config file. Labels from all the extracted frames are merged into a single .h5 file.
+
 As it's the case for most of the anomaly detection methods, the following methods produce an anomaly score for each incoming instance showing how well the instance could be an anomaly, finally a threshold fixed by the user permits to say that instances with anomaly scores higher than the threshold are anomalies. In the literature, data stream anomaly detection methods are mostly separated into statistical based, tree based, proximity based and deep learning based approaches. We have chosen highly used and recommended approaches in each of those categories. 
 
 Methods:
