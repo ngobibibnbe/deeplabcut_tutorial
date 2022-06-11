@@ -104,6 +104,9 @@ move2corner: true
 ## Create_training dataset
 Creates a training dataset for multi-animal datasets based on labeled videos included in the config file. Labels from all the extracted frames are merged into a single .h5 file.
 
+there are usefull croptting stratedy
+on the config file the most influencing parameters are: iteration, training_fraction, and skeletong, 
+parameters and their function could be view by doing help(deeplabcut.create_multianimaltrainingdataset)
 As it's the case for most of the anomaly detection methods, the following methods produce an anomaly score for each incoming instance showing how well the instance could be an anomaly, finally a threshold fixed by the user permits to say that instances with anomaly scores higher than the threshold are anomalies. In the literature, data stream anomaly detection methods are mostly separated into statistical based, tree based, proximity based and deep learning based approaches. We have chosen highly used and recommended approaches in each of those categories. 
 
 Methods:
